@@ -1,0 +1,293 @@
+@import "tailwindcss";
+
+@theme {
+  --color-forest: #4a7c3f;
+  --color-forest-dark: #2d5226;
+  --color-forest-light: #6a9e5e;
+  --color-moss: #7a9e6e;
+  --color-bark: #8b6914;
+  --color-cream: #f5f0e8;
+  --color-warm-white: #faf8f3;
+  --color-soil: #3d2f1a;
+  --color-river: #7ab8d0;
+  --color-river-light: #b8dde9;
+  --color-gold: #c8a84b;
+  --color-stone: #9e9888;
+
+  --font-display: var(--font-playfair);
+  --font-serif: var(--font-cormorant);
+  --font-body: var(--font-raleway);
+}
+
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-warm-white);
+    color: var(--color-soil);
+    font-family: var(--font-body), sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display), serif;
+  }
+}
+
+/* Grain texture overlay */
+.grain-overlay::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.4;
+}
+
+/* Scroll animations */
+[data-animate] {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-animate="fade-left"] {
+  transform: translateX(-40px);
+}
+
+[data-animate="fade-right"] {
+  transform: translateX(40px);
+}
+
+[data-animate="scale-up"] {
+  transform: scale(0.92);
+  opacity: 0;
+}
+
+[data-animate="fade-up"] {
+  transform: translateY(40px);
+  opacity: 0;
+}
+
+[data-animate].in-view {
+  opacity: 1;
+  transform: translateY(0) translateX(0) scale(1);
+}
+
+[data-animate][data-delay="100"] { transition-delay: 0.1s; }
+[data-animate][data-delay="200"] { transition-delay: 0.2s; }
+[data-animate][data-delay="300"] { transition-delay: 0.3s; }
+[data-animate][data-delay="400"] { transition-delay: 0.4s; }
+[data-animate][data-delay="500"] { transition-delay: 0.5s; }
+[data-animate][data-delay="600"] { transition-delay: 0.6s; }
+[data-animate][data-delay="700"] { transition-delay: 0.7s; }
+
+/* Hero parallax container */
+.hero-parallax {
+  will-change: transform;
+}
+
+/* Decorative leaf motif */
+.leaf-divider {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.leaf-divider::before,
+.leaf-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(74, 124, 63, 0.4), transparent);
+}
+
+/* Card hover effects */
+.service-card {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+}
+
+.service-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 60px rgba(74, 124, 63, 0.15);
+}
+
+/* Navigation active/hover underline */
+.nav-link {
+  position: relative;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background-color: var(--color-gold);
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+  width: 100%;
+}
+
+/* Organic shape clip */
+.organic-clip {
+  clip-path: ellipse(90% 100% at 50% 0%);
+}
+
+/* River wave animation */
+@keyframes river-wave {
+  0%, 100% { transform: scaleX(1) translateX(0); }
+  50% { transform: scaleX(1.05) translateX(-10px); }
+}
+
+.river-wave {
+  animation: river-wave 8s ease-in-out infinite;
+}
+
+/* Floating gentle animation */
+@keyframes float-gentle {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+.float-gentle {
+  animation: float-gentle 6s ease-in-out infinite;
+}
+
+/* Page load animations */
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fade-in-down {
+  animation: fadeInDown 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 1.2s ease forwards;
+}
+
+/* Image reveal */
+.img-reveal {
+  overflow: hidden;
+}
+
+.img-reveal img {
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.img-reveal:hover img {
+  transform: scale(1.05);
+}
+
+/* Botanical border decoration */
+.botanical-border {
+  border: 1px solid rgba(74, 124, 63, 0.2);
+  position: relative;
+}
+
+.botanical-border::before {
+  content: "❧";
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-warm-white);
+  padding: 0 8px;
+  color: var(--color-forest);
+  font-size: 1.2rem;
+}
+
+/* Background patterns */
+.bg-dots {
+  background-image: radial-gradient(circle, rgba(74, 124, 63, 0.12) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+.bg-lines {
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgba(74, 124, 63, 0.04) 10px,
+    rgba(74, 124, 63, 0.04) 11px
+  );
+}
+
+/* Contact info hover */
+.contact-item {
+  transition: all 0.3s ease;
+}
+
+.contact-item:hover {
+  transform: translateX(4px);
+  color: var(--color-forest);
+}
+
+/* Section counter */
+.section-number {
+  font-family: var(--font-display), serif;
+  font-size: clamp(5rem, 10vw, 8rem);
+  line-height: 1;
+  color: rgba(74, 124, 63, 0.08);
+  font-weight: 900;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-cream);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-forest);
+  border-radius: 3px;
+}
+
+/* Badge pill */
+.badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 14px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
